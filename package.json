@@ -1,11 +1,14 @@
 {
-  "name": "alexplus",
+  "name": "lifepilot-ai",
   "version": "1.0.0",
-  "description": "",
+  "description": "LifePilot AI - Grounded, Token-Optimized Personal Productivity Assistant with MCP and MongoDB",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "agent": "node agent.js",
+    "test": "node --test tests/*.test.js",
+    "benchmark": "node tests/benchmark.js"
   },
   "keywords": [],
   "author": "",
@@ -18,6 +21,7 @@
     "dotenv": "^18.0.7",
     "mongodb": "^7.7.0",
     "mongoose": "^9.11.1",
+    "openai": "^7.33.0",
     "zod": "^4.6.5"
   }
 }
