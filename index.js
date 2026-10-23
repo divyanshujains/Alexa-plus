@@ -1,10 +1,14 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
 import express from "express";
+import cors from "cors";
+import path from "node:path";
+import fs from "node:fs";
 import { z } from "zod";
 import connectDB from "./db.js";
 import Task from "./model/Task.js";
 import mongoose from "mongoose";
+import apiRouter from "./routes/api.js";
 import {
   isValidObjectId,
   formatTaskCompact,
@@ -821,7 +825,11 @@ export function createMcpServer() {
  */
 export function createApp() {
   const app = express();
+  app.use(cors());
   app.use(express.json());
+
+  // Mount REST API routes
+  app.use("/api", apiRouter);
 
   // Health check endpoint
   app.get("/health", (req, res) => {
@@ -831,6 +839,18 @@ export function createApp() {
       timestamp: new Date().toISOString(),
     });
   });
+
+  // Serve static frontend in production if built
+  const distPath = path.join(process.cwd(), "frontend", "dist");
+  if (fs.existsSync(distPath)) {
+    app.use(express.static(distPath));
+    app.use((req, res, next) => {
+      if (req.method === "GET" && !req.path.startsWith("/api") && !req.path.startsWith("/mcp")) {
+        return res.sendFile(path.join(distPath, "index.html"));
+      }
+      next();
+    });
+  }
 
   // MCP endpoint with StreamableHTTPServerTransport
   app.post("/mcp", async (req, res) => {

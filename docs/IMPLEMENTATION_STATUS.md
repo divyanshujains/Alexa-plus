@@ -26,6 +26,8 @@
 | **Security: Log Redaction** | **IMPLEMENTED & TESTED** | `utils/logging.js` | Redacts MongoDB passwords and API keys from logs. |
 | **Automated Test Suite (20 tests)** | **IMPLEMENTED & TESTED** | `npm test` | 20 passed, 0 failed, 0 skipped (~1.6s execution). |
 | **Reproducible Benchmark** | **IMPLEMENTED & TESTED** | `npm run benchmark` | Empirical token comparison across 5 primary workflows. |
+| **REST API Adapter** | **IMPLEMENTED & TESTED** | `routes/api.js`, `index.js` | REST endpoints for tasks, goals, planner, chat, and health. |
+| **React + Vite Frontend** | **IMPLEMENTED & TESTED** | `frontend/src/*`, `npm run frontend:build` | Premium Dark AI SaaS interface (Dashboard, Tasks, Planner, Goals, Chat, Settings, Landing). |
 
 ---
 

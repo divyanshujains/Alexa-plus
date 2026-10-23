@@ -6,16 +6,21 @@ LifePilot AI is an enterprise-grade agentic productivity system that orchestrate
 
 ```mermaid
 flowchart TD
-    User([User / Terminal CLI]) -->|Prompt / Natural Language| Agent[LifePilot Agent Loop\nagent.js]
+    User([User / Web Browser & CLI]) -->|Web Interaction| ReactSPA[React + Vite Frontend\nTailwind • Framer • GSAP • Recharts]
+    ReactSPA -->|REST API Requests| RESTAdapter[Express REST API\nroutes/api.js :3000/api]
+    User -->|Direct CLI Prompts| Agent[LifePilot Agent Loop\nagent.js]
+    RESTAdapter -->|Invoke AI Assistant| Agent
+    RESTAdapter -->|Direct Grounded Queries| MongoDB[(MongoDB Atlas\nTask Model)]
     Agent -->|System Prompt + Bounded Context| GroqLLM[Groq LLM Engine\nopenai/gpt-oss-20b]
     GroqLLM -->|Function / Tool Calls| Agent
     Agent -->|Streamable HTTP Transport| MCPServer[MCP Server\nindex.js :3000/mcp]
-    MCPServer -->|Mongoose Queries| MongoDB[(MongoDB Atlas\nTask Model)]
+    MCPServer -->|Mongoose Queries| MongoDB
     MongoDB -->|Raw Documents| MCPServer
     MCPServer -->|Compact, Sanitized JSON| Agent
     Agent -->|Tool Result Injection| GroqLLM
     GroqLLM -->|Grounded Final Response| Agent
-    Agent -->|Formatted Output + Metrics Summary| User
+    Agent -->|Response + Real Token Metrics| RESTAdapter
+    RESTAdapter -->|JSON Stream / Payloads| ReactSPA
 ```
 
 ---
@@ -24,7 +29,9 @@ flowchart TD
 
 | Component | File | Responsibilities |
 | :--- | :--- | :--- |
-| **MCP Server & Tool Registry** | [index.js](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/index.js) | Express HTTP server hosting Streamable HTTP MCP transport at `/mcp`, registering 12 productivity tools, validating inputs, executing MongoDB operations, and returning compact token-optimized JSON payloads. |
+| **React + Vite Frontend** | `frontend/src/*` | Polished Dark AI SaaS UI: Overview dashboard, Task List & Kanban Board, Grounded Daily Planner, Goals tracker, Conversational AI Copilot, and GSAP-powered marketing landing page. |
+| **REST API Adapter** | [routes/api.js](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/routes/api.js) | Secure REST endpoints for task CRUD, today/overdue queries, goal progress aggregations, daily planner calculations, and AI chat invocations. |
+| **MCP Server & Tool Registry** | [index.js](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/index.js) | Express HTTP server hosting Streamable HTTP MCP transport at `/mcp`, registering 12 productivity tools, validating inputs, executing MongoDB operations, and serving the built frontend SPA. |
 | **AI Agent Loop** | [agent.js](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/agent.js) | Manages bounded conversation history, tool call dispatching, in-turn tool deduplication, bounded exponential backoff retries, and token metrics capture. |
 | **Agent Alias** | [agen.js](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/agen.js) | Compatibility entry point forwarding to `agent.js` ensuring 100% backward compatibility with legacy scripts and configs. |
 | **Database Connector** | [db.js](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/db.js) | Manages Mongoose connection to MongoDB Atlas with Google DNS overrides for reliable connectivity. |

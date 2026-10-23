@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    --color-midnight-teal: #082F32;
+    --color-obsidian: #101615;
+    --color-obsidian-surface: #141C1A;
+    --color-obsidian-raised: #182321;
+    --color-warm-ivory: #F0EEE5;
+    --color-antique-gold: #B69A62;
+    --color-soft-sage: #A7B6A2;
+    --color-slate-gray: #89928D;
+  }
+
+  body {
+    background-color: #101615;
+    color: #F0EEE5;
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: -0.01em;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Manrope', sans-serif;
+    letter-spacing: -0.02em;
+    color: #F0EEE5;
+  }
+
+  .font-display, .font-serif {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    letter-spacing: normal;
+  }
+
+  code, pre, .font-mono {
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Refined Minimalist Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #101615;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #233330;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #B69A62;
+}
+
+/* Luxury Card & Panel Utilities */
+.luxury-card {
+  background: #141C1A;
+  border: 1px solid rgba(182, 154, 98, 0.12);
+  box-shadow: 0 8px 30px -4px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(182, 154, 98, 0.05);
+}
+
+.luxury-card-ivory {
+  background: #F0EEE5;
+  color: #101615;
+  border: 1px solid rgba(182, 154, 98, 0.25);
+  box-shadow: 0 12px 36px -6px rgba(0, 0, 0, 0.35);
+}
+
+.luxury-card-teal {
+  background: #082F32;
+  border: 1px solid rgba(182, 154, 98, 0.2);
+  box-shadow: 0 12px 35px -8px rgba(8, 47, 50, 0.5);
+}
+
+/* Hairline dividers and accents */
+.hairline-gold {
+  border-color: rgba(182, 154, 98, 0.2);
+}
+
+.hairline-subtle {
+  border-color: rgba(240, 238, 229, 0.08);
+}
+
+/* Subtle editorial aura */
+.editorial-glow {
+  background: radial-gradient(circle at 50% 0%, rgba(8, 47, 50, 0.4) 0%, transparent 70%);
+}
+
+.gold-glow {
+  box-shadow: 0 0 25px -4px rgba(182, 154, 98, 0.18);
+}
+
+/* Utility to hide scrollbar while preserving scrolling */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

@@ -1,205 +1,208 @@
-# LifePilot AI — Grounded Agentic Productivity Copilot
+# LifePilot AI — Quiet Luxury Grounded Productivity Copilot
 
-> An AI-powered personal productivity assistant engineered with the **Model Context Protocol (MCP)**, **MongoDB Atlas**, **Zero-Hallucination Grounding**, and **Empirical Token Optimization**.
-
----
-
-## 1. Problem Statement
-
-Personal task management and schedule planning are critical to everyday productivity, yet today's conversational AI planners suffer from major operational defects:
-1. **Hallucinatory Scheduling**: LLMs invent nonexistent task deadlines, fabricate clock times (e.g. "9:00 AM" without knowing user availability), and falsely claim tasks were completed or saved to the database.
-2. **Context & Token Bloat**: Sending raw database objects and repetitive system prompts causes token runaway, driving up latency and API cost.
-3. **Flaky Multi-Day Planning**: Multi-day tasks are frequently double-scheduled, front-loading entire weeks of work into a single day.
+> An executive-grade personal productivity copilot engineered with the **Model Context Protocol (MCP)**, **MongoDB Atlas**, **Zero-Hallucination Grounding**, **Empirical Token Optimization**, and a **Quiet Luxury Visual Identity**.
 
 ---
 
-## 2. Proposed Solution
+## 1. Executive Summary
 
-**LifePilot AI** couples an LLM agent with a Model Context Protocol (MCP) server backed by MongoDB Atlas. By enforcing strict grounding rules, deterministic prompt architecture, and lean serialization, LifePilot guarantees:
-- **Zero-Hallucination Grounding**: MongoDB is the absolute source of truth. Task mutations are only acknowledged if confirmed by MCP tools.
-- **Empirical 67% Token Reduction**: Deduplicated system prompts and compact serialization strip database overhead, reducing input tokens by 58.1% to 67.7% across all core workflows.
-- **Smart Daily Planner**: Prioritizes genuine overdue items, respects stated time budgets, uses numbered work sessions instead of invented clock times, and isolates multi-day stages.
+Conversational AI task planners often suffer from critical operational defects:
+1. **Hallucinatory Scheduling**: Fabricating fictional deadlines, inventing clock times (e.g., arbitrarily claiming "09:00 AM" without knowing user commitments), and falsely asserting tasks have been saved or marked done in the database.
+2. **Context & Token Bloat**: Sending unoptimized raw database objects and redundant system prompts causes token runaway, driving up latency and API expenses.
+3. **Template-Driven Generic SaaS UIs**: Modern AI applications frequently rely on generic, oversaturated blue-purple glowing cards, glassmorphic clutter, and cookie-cutter dashboards that distract rather than cultivate deep focus.
 
----
-
-## 3. Key Features
-
-- **12 MCP Productivity Tools**: Create, list, schedule, complete, and delete tasks; track goal and task subtask progress; manage deadlines; inspect overdue items; generate grounded daily plans.
-- **Token Usage Instrumentation**: Real-time request-level telemetry reporting prompt tokens, completion tokens, total tokens, cached tokens, and latency.
-- **In-Turn Tool Memoization**: Prevents duplicate executions of read-only tools within the same agent turn.
-- **Safe Error Recovery**: Exponential backoff retries for transient LLM errors (429 Rate Limits, 503 Service Unavailable) with strict guards against duplicate mutations.
-- **Credential Masking**: Sanitizes connection strings and API keys to prevent accidental leaks in terminal logs.
+**LifePilot AI** resolves these challenges by coupling an LLM agent with a Model Context Protocol (MCP) server backed by MongoDB Atlas, paired with an art-directed **Quiet Luxury Visual Identity** built around Midnight Teal, Warm Ivory, Deep Obsidian, Antique Gold, and Soft Sage.
 
 ---
 
-## 4. Architecture Overview
+## 2. Key Pillars & Architectural Guarantees
+
+### A. Zero-Hallucination Grounding
+- **MongoDB Atlas as Absolute Truth**: Tasks, subtasks, deadlines, and completion states exist in the database or not at all.
+- **Strict Mutation Verification**: The AI agent only acknowledges task creation, updates, or completions after confirmed execution through registered MCP tool calls.
+- **No Hallucinated Clock Times**: The planner utilizes numbered chronological focus sessions (`#1`, `#2`, `#3`) with mathematical duration budgets rather than inventing arbitrary hours.
+
+### B. Empirical 67% Token Optimization
+- **Deduplicated System Prompt**: Reduced system prompt overhead from 2,447 to 788 tokens.
+- **Compact Projections (`formatTaskCompact`)**: Strips unnecessary database fields (`__v`, internal IDs, metadata bloat) to deliver lean JSON payloads to the LLM.
+- **In-Turn Memoization**: Caches read-only queries within the same conversational turn to prevent redundant round-trips to MongoDB.
+
+### C. Quiet Luxury Visual Identity & Art-Directed UI
+- **Signature Palette**:
+  - **Midnight Teal (`#082F32`)**: Primary navigation, selected surfaces, executive action buttons, and brand foundations.
+  - **Deep Obsidian (`#101615`)**: Sovereign dark workspace canvas, surfaces (`#141C1A`), and raised cards (`#182321`).
+  - **Warm Ivory (`#F0EEE5`)**: High-contrast editorial hero sections, active navigation pills, and executive briefings.
+  - **Muted Antique Gold (`#B69A62`)**: Restrained hairline borders, compass navigation needles, and milestone progress rings.
+  - **Soft Sage (`#A7B6A2`)**: Verified telemetry indicators, completed states, and low-urgency status badges.
+  - **Slate Gray (`#89928D`)**: Secondary typography, timestamps, and supporting metadata.
+- **Refined Typography Pairing**:
+  - **Display / Editorial**: *Cormorant Garamond* (Georgia serif fallback) for executive titles and milestones.
+  - **Interface / Body**: *Manrope* for high-density readability across task rows, buttons, and forms.
+  - **Telemetry / Metadata**: *IBM Plex Mono* for token telemetry, timestamps, and model parameters.
+- **Geometric Brand Identity**:
+  - Celestial navigation sextant/compass motif: diamond needles, orbital guide ring, antique gold crossbar, and warm ivory needle against midnight teal.
+
+---
+
+## 3. Technology Stack
+
+### Backend & Protocol Architecture
+- **Runtime**: Node.js (v20+ / v24+ with native ES Modules)
+- **Protocol**: `@modelcontextprotocol/sdk` (Streamable HTTP Transport)
+- **Database**: MongoDB Atlas with `mongoose` schemas
+- **Inference Engine**: Groq LPU Cloud (`openai/gpt-oss-20b`) via `openai` SDK
+- **Schema Validation**: `zod`
+- **Testing**: Node.js Native Test Runner (`node --test`)
+
+### Frontend Architecture
+- **Framework**: React 18 with Vite
+- **Styling**: Tailwind CSS with custom luxury tokens and CSS custom variables
+- **Motion & Interactions**: Framer Motion for layout transitions, GSAP with ScrollTrigger for editorial showcase reveals
+- **Iconography**: Lucide React with consistent 1.75 stroke weights
+- **Data Visualization**: Recharts with luxury palette styling (Terracotta, Antique Gold, Soft Sage)
+- **Routing**: React Router v6
+
+---
+
+## 4. Architecture Diagram
 
 ```mermaid
 flowchart LR
-    User([User CLI]) --> Agent[Agent Loop\nagent.js]
-    Agent -->|System Prompt + Bounded Context| Groq[Groq LLM\ngpt-oss-20b]
-    Groq -->|Tool Calls| Agent
+    User([User / Browser]) -->|React SPA| UI[Frontend UI\n:3000 or :5173]
+    UI -->|REST API Requests| Server[Express Server\nindex.js :3000]
+    Server -->|Agent Execution| Agent[Agent Loop\nagent.js]
+    Agent -->|Bounded Context + Compact Prompt| Groq[Groq LPU Cloud\ngpt-oss-20b]
+    Groq -->|Tool Call Requests| Agent
     Agent -->|Streamable HTTP Transport| MCP[MCP Server\nindex.js :3000/mcp]
     MCP -->|Mongoose Queries| MongoDB[(MongoDB Atlas)]
     MongoDB -->|Raw Documents| MCP
-    MCP -->|Compact JSON| Agent
-    Agent -->|Tool Results| Groq
-    Groq -->|Final Response| Agent
-    Agent --> User
+    MCP -->|formatTaskCompact JSON| Agent
+    Agent -->|Grounded Tool Output| Groq
+    Groq -->|Verified Telemetry Response| Server
+    Server -->|JSON Response| UI
 ```
 
-For complete technical specifications, see [docs/ARCHITECTURE.md](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/docs/ARCHITECTURE.md).
+For full technical specifications, see [docs/ARCHITECTURE.md](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/docs/ARCHITECTURE.md).
 
 ---
 
-## 5. Technology Stack
+## 5. Application Views & Features
 
-- **Runtime**: Node.js (v24+ with native ES Modules and native test runner)
-- **Protocol**: `@modelcontextprotocol/sdk` (Streamable HTTP Server & Client Transport)
-- **Database**: MongoDB Atlas with `mongoose`
-- **LLM Engine**: Groq Cloud API (`openai/gpt-oss-20b`) via `openai` SDK
-- **Schema Validation**: `zod`
-- **Environment Management**: `dotenv`
+| View | Route | Key Functionality |
+| :--- | :--- | :--- |
+| **Executive Dashboard** | `/` | Daily focus queue, overdue blockers, urgency breakdown bar chart, and Warm Ivory executive briefing card. |
+| **Task Orchestration** | `/tasks` | Full registry of MongoDB Atlas tasks, searchable with instant status/priority filters, dual list/board view modes, and subtask hierarchy. |
+| **Smart Daily Planner** | `/planner` | Deterministic focus time allocation slider, chronologically numbered work sessions (`#1`, `#2`), and deferred task protection. |
+| **Strategic Milestones** | `/goals` | Grouped milestone initiatives with Antique Gold SVG progress rings and subtask progress tracking. |
+| **AI Personal Concierge** | `/assistant` | Grounded chat interface with real-time prompt/completion token metrics, tool call counts, latency telemetry, and pre-composed directives. |
+| **System & Grounding** | `/settings` | Live diagnostics, connection ping tests, Groq LPU model parameters, and token optimization audit. |
+| **Editorial Showcase** | `/landing` | High-impact product showcase with Cormorant Garamond typography, GSAP entrance reveals, and architectural flow breakdowns. |
 
 ---
 
-## 6. Prerequisites
+## 6. Installation & Prerequisites
 
+### Prerequisites
 - **Node.js** >= 18.0.0 (Node 20+ or 24+ recommended)
-- **MongoDB Atlas** cluster URI (or local MongoDB instance)
+- **MongoDB Atlas** connection string (or local MongoDB URI)
 - **Groq API Key** (from [console.groq.com](https://console.groq.com))
 
+### 1. Clone & Install
+```bash
+# Navigate to project root
+cd c:\Users\leno\OneDrive\Desktop\Alexplus
+
+# Install backend dependencies
+npm install
+
+# Install frontend dependencies
+npm --prefix frontend install
+```
+
+### 2. Configure Environment Variables
+Copy `.env.example` to `.env`:
+```bash
+cp .env.example .env
+```
+
+Verify or configure credentials in `.env`:
+```ini
+MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/lifepilot?retryWrites=true&w=majority
+GROQ_API_KEY=gsk_your_groq_api_key_here
+GROQ_MODEL=openai/gpt-oss-20b
+MCP_SERVER_URL=http://localhost:3000/mcp
+PORT=3000
+ENABLE_METRICS=true
+```
+
 ---
 
-## 7. Installation & Setup
+## 7. Running the Application
 
-1. **Clone or Navigate to the Repository**:
-   ```bash
-   cd c:\Users\leno\OneDrive\Desktop\Alexplus
-   ```
+### Option A: Unified Production Mode (Recommended)
+Build the luxury frontend once, then launch the Express server which serves the React SPA, REST endpoints, and streamable MCP server all on port `3000`:
+```bash
+# Build frontend
+npm run frontend:build
 
-2. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
+# Launch unified server
+npm start
+```
+- **Executive Workspace**: `http://localhost:3000`
+- **Editorial Showcase**: `http://localhost:3000/landing`
+- **MCP Endpoint**: `http://localhost:3000/mcp`
+- **Health Telemetry**: `http://localhost:3000/api/health`
 
-3. **Configure Environment Variables**:
-   Copy `.env.example` to `.env`:
-   ```bash
-   cp .env.example .env
-   ```
-   Fill in your credentials in `.env`:
-   ```ini
-   MONGO_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/lifepilot?retryWrites=true&w=majority
-   GROQ_API_KEY=gsk_your_groq_api_key_here
-   GROQ_MODEL=openai/gpt-oss-20b
-   MCP_SERVER_URL=http://localhost:3000/mcp
-   PORT=3000
-   ENABLE_METRICS=true
-   ```
+### Option B: Development Mode (Hot-Reloading)
+Run the backend server and Vite dev server simultaneously:
 
----
-
-## 8. Starting the Application
-
-### Step 1: Start the MCP Server
-In your first terminal:
+**Terminal 1 (Backend & MCP Server):**
 ```bash
 npm start
 ```
-*Output: `LifePilot MCP server running at http://localhost:3000/mcp`*
 
-### Step 2: Start the AI Agent
-In your second terminal:
+**Terminal 2 (Vite Frontend):**
+```bash
+npm run frontend:dev
+```
+- Access the hot-reloading React application at `http://localhost:5173`. Requests to `/api` are automatically proxied to port `3000`.
+
+### Option C: Terminal Interactive Agent
+To interact with the LifePilot MCP agent directly in your CLI:
 ```bash
 npm run agent
 ```
-*(Note: `node agen.js` is also supported for backward compatibility)*
 
 ---
 
-## 9. Example Interactions
+## 8. Verification & Automated Test Suite
 
-### Task Creation
-```text
-You: Add a high-priority task "Finalize Pitch Deck" for the goal "Hackathon" with a 45-minute duration.
-
-LifePilot: Task "Finalize Pitch Deck" has been created successfully (ID: 6710a1b2c3d4e5f6a7b8c901) under the goal "Hackathon" with High priority.
-```
-
-### Smart Daily Planning (No Hallucinated Clock Times)
-```text
-You: Plan my day. I have 2 hours of available work time today.
-
-LifePilot: Here is your grounded work plan for today (120 minutes available):
-
-Overdue Items:
-- None
-
-Proposed Schedule:
-- Session 1: Finalize Pitch Deck (45m stored, High priority)
-- Session 2: Code Review PR #12 (45m estimated, Medium priority)
-
-Summary:
-- Total Scheduled Work: 90 minutes
-- Buffer / Remaining Time: 30 minutes
-- Note: Numbered sessions are used because no start time was provided.
-```
-
-### Task Completion
-```text
-You: Mark the task "Finalize Pitch Deck" as completed.
-
-LifePilot: Task "Finalize Pitch Deck" has been marked as completed in MongoDB.
-```
-
----
-
-## 10. Verification & Automated Testing
-
-LifePilot includes a comprehensive test suite covering all 17 core requirements (tool discovery, routing, planning algorithms, time budgets, multi-day isolation, transient retry, and memoization):
+LifePilot includes an automated test suite covering all core requirements: MCP tool discovery, argument validation, planning algorithms, time budget bounds, multi-day isolation, transient retry mechanisms, and in-turn memoization:
 
 ```bash
 # Run all 20 automated tests
 npm test
 
-# Run the token optimization benchmark
+# Run the empirical token optimization benchmark
 npm run benchmark
 ```
 
-See [docs/TESTING.md](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/docs/TESTING.md) for full test details and verification matrix.
+See [docs/TESTING.md](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/docs/TESTING.md) for full test reports and the verification matrix.
 
 ---
 
-## 11. Project Documentation Index
+## 9. Documentation Index
 
-- [docs/ARCHITECTURE.md](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/docs/ARCHITECTURE.md) — System architecture, request flows, and mermaid diagrams.
-- [docs/TOKEN_OPTIMIZATION.md](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/docs/TOKEN_OPTIMIZATION.md) — Token reduction benchmarks, serialization rules, and telemetry.
-- [docs/HALLUCINATION_PREVENTION.md](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/docs/HALLUCINATION_PREVENTION.md) — Grounding rules, planning bounds, and validation specifications.
-- [docs/PROMPT_CACHING.md](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/docs/PROMPT_CACHING.md) — Groq LPU provider analysis, prefix consistency, and cache telemetry.
-- [docs/TESTING.md](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/docs/TESTING.md) — Automated test suite report (20/20 passed) and mocking strategy.
-- [docs/DEMO_SCRIPT.md](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/docs/DEMO_SCRIPT.md) — 3-5 minute hackathon presentation and live demo script.
-- [docs/IMPLEMENTATION_STATUS.md](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/docs/IMPLEMENTATION_STATUS.md) — Feature status checklist and submission delivery audit.
-
----
-
-## 12. Security Considerations
-
-- **Secrets Handling**: `.env` is ignored by Git; `.env.example` contains only placeholder values.
-- **Log Redaction**: The logger automatically masks MongoDB passwords, Groq API keys, and auth headers.
-- **Input Sanitization**: MongoDB ObjectIds and ISO-8601 timestamps are validated before database execution.
-- **Local MCP Boundary**: The server is designed for local or protected network environments. For public hosting, put behind a reverse proxy with TLS and bearer token authentication.
+- [docs/ARCHITECTURE.md](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/docs/ARCHITECTURE.md) — Comprehensive architecture, transport layers, and sequence diagrams.
+- [docs/TOKEN_OPTIMIZATION.md](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/docs/TOKEN_OPTIMIZATION.md) — Benchmark numbers, serialization projections, and telemetry audits.
+- [docs/HALLUCINATION_PREVENTION.md](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/docs/HALLUCINATION_PREVENTION.md) — Grounding constraints, deterministic scheduling, and verification rules.
+- [docs/PROMPT_CACHING.md](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/docs/PROMPT_CACHING.md) — Groq LPU provider analysis, prefix stabilization, and cache efficiency.
+- [docs/TESTING.md](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/docs/TESTING.md) — Test matrix, mocking strategies, and regression coverage.
+- [docs/DEMO_SCRIPT.md](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/docs/DEMO_SCRIPT.md) — Step-by-step hackathon presentation walkthrough.
+- [docs/IMPLEMENTATION_STATUS.md](file:///c:/Users/leno/OneDrive/Desktop/Alexplus/docs/IMPLEMENTATION_STATUS.md) — Feature checklist and submission delivery record.
 
 ---
 
-## 13. Current Limitations & Future Roadmap
+## 10. License
 
-- **Headless CLI**: Operates via terminal; future versions can add a React/Next.js dashboard.
-- **Calendar Synchronization**: Future integration with Google Calendar / Outlook MCP servers.
-- **Audio / Voice Interface**: Can be connected to Alexa Skills Kit or Whisper/ElevenLabs audio pipelines.
-
----
-
-## 14. License
-
-ISC License. Built for the Hackathon Submission.
+ISC License. Built with precision for the Hackathon Submission.
